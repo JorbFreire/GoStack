@@ -24,8 +24,16 @@ app.get("/repositories", (request, response) => {
 
 app.post("/repositories", (request, response) => {
   const { title, url, techs } = request.body;
+
+  if(!title || !url || !techs)
+    return response.status.json({
+      error: "you must to specify the following params on json body:",
+      title: "",
+      url:   "",
+      techs: "",
+    });
   
-  const repository = {
+  const newRepository = {
     id: uuid(),
     title,
     url,
@@ -33,17 +41,24 @@ app.post("/repositories", (request, response) => {
     likes: 0,
   };
   
-  return response.status(200).json(repository);
+  return response.status(200).json(newRepository);
 });
 
 app.put("/repositories/:id", (request, response) => {
   const { id } = request.params;
   const { title, url, techs } = request.body;
 
+  if(!id)
+    return response.status(400).json({
+      error: "you must especify the id o the repository to edit"
+    });
+
   const repositoryIndex = repositories.findIndex( repository => repository.id === id);
 
   if(!title && !url && !techs)
-    return response.status(400).json({ error: "empty body" });
+    return response.status(400).json({
+      error: "you must to send unless one element on body request (title, utl or techs)"
+    });
   
   if(repositoryIndex <= 0)
     return repositoryIndex.status(403).json({ error: "Repository not found" });
@@ -60,11 +75,28 @@ app.put("/repositories/:id", (request, response) => {
 
 app.delete("/repositories/:id", (req, res) => {
   const { id } = request.params;
+
+  if(!id)
+    return response.status(400).json({
+      error: "you must especify the id o the repository to delete"
+    });
+
   repositories.splice(repository.findIndex(repository => repository.id === id));
 });
 
 app.post("/repositories/:id/like", (request, response) => {
-  // TODO
+  const { id } = request.params;
+
+  if(!id)
+    return response.status(400).json({
+      error: "you must especify the id o the repository to add likes"
+    });
+  
+  const repositoryIndex = repositories.indexOf(repository => repository.id ===id);
+
+  repositories[repositoryIndex].likes++;
+  
+  return response.status(200).json(repositories[repositoryIndex]);
 });
 
 module.exports = app;
