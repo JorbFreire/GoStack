@@ -67,7 +67,7 @@ app.put("/repositories/:id", (request, response) => {
   return response.status(200).json(repositories[repositoryIndex]);
 });
 
-app.delete("/repositories/:id", (req, res) => {
+app.delete("/repositories/:id", (request, response) => {
   const { id } = request.params;
 
   if(!id)
@@ -75,7 +75,10 @@ app.delete("/repositories/:id", (req, res) => {
       error: "you must especify the id o the repository to delete"
     });
 
-  repositories.splice(repository.findIndex(repository => repository.id === id));
+  return response.status(200).json(
+    repositories.splice(
+      repository.findIndex(repository => repository.id === id)
+  ));
 });
 
 app.post("/repositories/:id/like", (request, response) => {
