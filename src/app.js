@@ -54,7 +54,7 @@ app.put("/repositories/:id", (request, response) => {
       error: "you must to send unless one element on body request (title, url or techs)"
     });
   
-  if(repositoryIndex <= 0)
+  if(repositoryIndex < 0)
     return response.status(403).json({ error: "Repository not found" });
     
   if(title)
@@ -64,7 +64,7 @@ app.put("/repositories/:id", (request, response) => {
   if(techs)
     repositories[repositoryIndex].techs = techs;
     
-  return repositories[repositoryIndex];
+  return response.status(200).json(repositories[repositoryIndex]);
 });
 
 app.delete("/repositories/:id", (req, res) => {
