@@ -8,14 +8,31 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-const repositories = [];
+const repositories = [
+  {
+    id: "uuid",
+    title: 'Desafio Node.js',
+    url: 'http://github.com/...',
+    techs: ["Node.js", "..."],
+    likes: 0
+  }
+];
 
 app.get("/repositories", (request, response) => {
   // TODO
 });
 
 app.post("/repositories", (request, response) => {
-  // TODO
+  const { title, url, techs } = request.body;
+  
+
+  repositories.push({
+    id: (repositories.length + 1),
+    title,
+    url,
+    techs,
+    likes: 0,
+  });
 });
 
 app.put("/repositories/:id", (request, response) => {
