@@ -8,7 +8,7 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-const repositories = [];
+const repositories = []
 
 app.get("/repositories", (request, response) => {
   return response.status(200).json(repositories);
@@ -70,18 +70,24 @@ app.put("/repositories/:id", (request, response) => {
 app.delete("/repositories/:id", (request, response) => {
   const { id } = request.params;
 
+  console.log("start")
+
   if(!id)
     return response.status(400).json({
       error: "you must especify the id o the repository to delete"
     });
 
-  return response.status(200).json(
-    repositories.splice(
-      repository.findIndex(repository => repository.id === id)
-  ));
+  console.log("pass id check");
+
+  repositories.splice(
+    repositories.findIndex(repository => repository.id === id), 1
+  );
+  console.log("index finded");
+  
+  return response.status(200).json( { status: "repository deleted" });
 });
 
-app.post("/repositories/:id/like", (request, response) => {
+app.put("/repositories/:id/like", (request, response) => {
   const { id } = request.params;
 
   if(!id)
@@ -89,8 +95,11 @@ app.post("/repositories/:id/like", (request, response) => {
       error: "you must especify the id o the repository to add likes"
     });
   
-  const repositoryIndex = repositories.indexOf(repository => repository.id ===id);
+  const repositoryIndex = repositories.findIndex(repository => repository.id === id);
 
+  if(repositoryIndex < 0)
+    return response.status(403).json({ error: "repository not found" });
+  
   repositories[repositoryIndex].likes++;
   
   return response.status(200).json(repositories[repositoryIndex]);
