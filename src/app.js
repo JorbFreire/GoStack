@@ -51,16 +51,16 @@ app.put("/repositories/:id", (request, response) => {
 
   if(!title && !url && !techs)
     return response.status(400).json({
-      error: "you must to send unless one element on body request (title, utl or techs)"
+      error: "you must to send unless one element on body request (title, url or techs)"
     });
   
   if(repositoryIndex <= 0)
-    return repositoryIndex.status(403).json({ error: "Repository not found" });
+    return response.status(403).json({ error: "Repository not found" });
     
   if(title)
     repositories[repositoryIndex].title = title;
   if(url)
-    repositories[repositoryIndex].url = url;
+    repositories[repositoryIndex].url   = url;
   if(techs)
     repositories[repositoryIndex].techs = techs;
     
