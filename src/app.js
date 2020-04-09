@@ -19,7 +19,7 @@ const repositories = [
 ];
 
 app.get("/repositories", (request, response) => {
-  // TODO
+  return repositories;
 });
 
 app.post("/repositories", (request, response) => {
@@ -33,6 +33,8 @@ app.post("/repositories", (request, response) => {
     techs,
     likes: 0,
   });
+
+  return 0;
 });
 
 app.put("/repositories/:id", (request, response) => {
