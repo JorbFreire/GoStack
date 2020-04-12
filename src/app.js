@@ -70,19 +70,14 @@ app.put("/repositories/:id", (request, response) => {
 app.delete("/repositories/:id", (request, response) => {
   const { id } = request.params;
 
-  console.log("start")
-
   if(!id)
     return response.status(400).json({
       error: "you must especify the id o the repository to delete"
     });
 
-  console.log("pass id check");
-
   repositories.splice(
     repositories.findIndex(repository => repository.id === id), 1
   );
-  console.log("index finded");
   
   return response.status(200).json( { status: "repository deleted" });
 });
