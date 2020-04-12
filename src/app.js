@@ -18,7 +18,7 @@ app.post("/repositories", (request, response) => {
   const { title, url, techs } = request.body;
 
   if(!title || !url || !techs)
-    return response.status(200).json({
+    return response.status(400).json({
       error: "you must to specify the following params on json body:",
       title: "",
       url:   "",
